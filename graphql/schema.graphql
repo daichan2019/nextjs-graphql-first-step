@@ -12,4 +12,5 @@ type Team {
 type Query {
   users: [User!]!
   teams: [Team!]!
+  user(name: String!): User
 }

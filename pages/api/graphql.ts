@@ -27,6 +27,10 @@ const resolvers: Resolvers = {
   Query: {
     users: () => users,
     teams: () => teams,
+    user: (_, { name: specifiedName }) => {
+      const user = users.find(({ name }) => name === specifiedName);
+      return user || null;
+    },
   },
 };
 

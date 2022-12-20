@@ -23,6 +23,19 @@ const users: User[] = [
   { id: '3', name: 'Carol', teamName: 'White' },
 ];
 
+const addUser = (newUserName: string): User | null => {
+  const user = users.find(({ name }) => name === newUserName);
+  if (user) return null; // 同名のユーザーが存在した場合は null を返す
+  const id = users.length + 1;
+  const newUser: User = {
+    id: String(id),
+    name: newUserName,
+    teamName: 'White', // 実装が面倒なのでチームは必ず White にするようにした
+  };
+  users.push(newUser);
+  return newUser;
+};
+
 const resolvers: Resolvers = {
   Query: {
     users: () => users,
@@ -31,6 +44,9 @@ const resolvers: Resolvers = {
       const user = users.find(({ name }) => name === specifiedName);
       return user || null;
     },
+  },
+  Mutation: {
+    addUser: (_, { name }) => addUser(name),
   },
 };
 

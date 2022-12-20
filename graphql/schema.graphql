@@ -14,3 +14,7 @@ type Query {
   teams: [Team!]!
   user(name: String!): User
 }
+
+type Mutation {
+  addUser(name: String!): User
+}

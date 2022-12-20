@@ -3,10 +3,12 @@ import {
   InMemoryCache,
   ApolloProvider,
   useQuery,
+  useMutation,
 } from '@apollo/client';
 import {
   GetUsersAndTeamsDocument,
   GetUserDocument,
+  AddUserDocument,
 } from '../graphql/dist/generated-client';
 import { useState, memo } from 'react';
 
@@ -96,11 +98,51 @@ function SearchUser() {
   );
 }
 
+function AddUser() {
+  const [text, setText] = useState('');
+  const [addUser, { loading, error, data }] = useMutation(AddUserDocument);
+
+  const Status = () => {
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error</p>;
+    if (data && !data.addUser) return <p>同名のユーザーが既に存在します</p>;
+    if (!data) return null;
+    return <p>登録が完了しました</p>;
+  };
+
+  return (
+    <>
+      <h1>Add User</h1>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          addUser({
+            variables: {
+              name: text,
+            },
+          });
+        }}
+      >
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => {
+            setText(e.currentTarget.value);
+          }}
+        />
+      </form>
+
+      <Status />
+    </>
+  );
+}
+
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <UsersAndTeams />
       <SearchUser />
+      <AddUser />
     </ApolloProvider>
   );
 }

@@ -23,3 +23,9 @@ query getUser($name: String!) {
     teamName
   }
 }
+
+mutation addUser($name: String!) {
+  addUser(name: $name) {
+    id
+  }
+}

@@ -15,13 +15,21 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  teams: Array<Team>;
   users: Array<User>;
+};
+
+export type Team = {
+  __typename?: 'Team';
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
   name: Scalars['String'];
+  teamName: Scalars['String'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -98,6 +106,7 @@ export type ResolversTypes = ResolversObject<{
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Team: ResolverTypeWrapper<Team>;
   User: ResolverTypeWrapper<User>;
 }>;
 
@@ -107,21 +116,31 @@ export type ResolversParentTypes = ResolversObject<{
   ID: Scalars['ID'];
   Query: {};
   String: Scalars['String'];
+  Team: Team;
   User: User;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  teams?: Resolver<Array<ResolversTypes['Team']>, ParentType, ContextType>;
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 }>;
 
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+export type TeamResolvers<ContextType = any, ParentType extends ResolversParentTypes['Team'] = ResolversParentTypes['Team']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  teamName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type Resolvers<ContextType = any> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
+  Team?: TeamResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
 
